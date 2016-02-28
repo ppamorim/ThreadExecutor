@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+
+  compileSdkVersion 23
+  buildToolsVersion "23.0.2"
+
+  defaultConfig {
+    applicationId "com.threadexecutor.sample"
+    minSdkVersion 10
+    targetSdkVersion 23
+    versionCode 1
+    versionName "1.0"
+  }
+
+  buildTypes {
+    debug {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  sourceSets {
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src/main/java']
+      res.srcDirs = ['res']
+    }
+  }
+
+}
+
+dependencies {
+  compile project(':threadexecutor')
+  compile 'com.android.support:appcompat-v7:23.1.1'
+  compile 'com.google.dagger:dagger:2.0.1'
+  apt 'com.google.dagger:dagger-compiler:2.0.1'
+  provided 'org.glassfish:javax.annotation:10.0-b28'
+}
