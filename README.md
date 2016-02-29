@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.ppamorim:threadexecutor:0.2'
+  compile 'com.github.ppamorim:threadexecutor:0.1'
 }
 ```
 
