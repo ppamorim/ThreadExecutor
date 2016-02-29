@@ -15,6 +15,11 @@
 */
 package com.github.ppamorim.threadexecutor;
 
+/**
+ * Interface that will use the instance of
+ * main thread to inform the result of the
+ * async task to the main thread.
+ */
 public interface MainThread {
   void post(final Runnable runnable);
 }

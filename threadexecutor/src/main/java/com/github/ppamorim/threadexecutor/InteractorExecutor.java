@@ -15,6 +15,11 @@
 */
 package com.github.ppamorim.threadexecutor;
 
+/**
+ * This interface will inform to the Thread
+ * Executor the interactor that needs to be
+ * executed.
+ */
 public interface InteractorExecutor {
   void run(Interactor interactor);
 }

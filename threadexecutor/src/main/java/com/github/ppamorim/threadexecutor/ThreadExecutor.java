@@ -22,6 +22,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
+/**
+ * This class will create the instance of
+ * BlockingQueue to be used with ThreadPool.
+ * The thread pool has some limitations and
+ * automatically will release any thread of
+ * the memory.
+ * Some configurations can be used to change
+ * some variables of ThreadPool. Use the method
+ * .build to finished every configuration.
+ */
 public class ThreadExecutor implements InteractorExecutor {
 
   private int corePoolSize = 3;

@@ -19,6 +19,10 @@ import android.os.Handler;
 import android.os.Looper;
 import javax.inject.Inject;
 
+/**
+ * This mehtod will expose te main thread using
+ * the handler and MainLooper of the application.
+ */
 public class MainThreadImpl implements MainThread {
 
   private Handler handler;
