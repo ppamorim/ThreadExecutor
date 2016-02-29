@@ -1,4 +1,7 @@
 # ThreadExecutor
+
+[![Build Status](https://api.travis-ci.org/ppamorim/ThreadExecutor.svg?branch=master)](https://travis-ci.org/ppamorim/ThreadExecutor)
+
 Simple library that expose the ThreadPool, using Dagger 2.
 
 Why?
