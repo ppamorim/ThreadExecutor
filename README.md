@@ -26,13 +26,8 @@ You can easily change any parameter of `InteractorExecutor`, just change what do
 
 ```
 
-Contributors
-------------
-
-* [Pedro Paulo de Amorim][11]
-
 Import dependency
---------------------------------
+-----------------
 
 Into your build.gradle:
 
@@ -48,6 +43,11 @@ dependencies {
   compile 'com.github.ppamorim:threadexecutor:0.1'
 }
 ```
+
+Contributors
+------------
+
+* [Pedro Paulo de Amorim][11]
 
 License
 -------
