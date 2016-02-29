@@ -1,14 +1,30 @@
 # ThreadExecutor
-Simple library that expose the ThreadPool or any class, using Dagger 2
+Simple library that expose the ThreadPool, using Dagger 2.
 
 Why?
 ----
 
-Are you sad to create every time the ThreadPool and MainThread to be exposed with
+Are you sad to create every time the `ThreadPool` and `MainThread` to be exposed with
 Dagger to the application? If yes, you can use this library to reduce your work.
 
-Right now you can change any parameter of ThreadExecutor, using the exposed instance
+Right now you can change any parameter of `ThreadExecutor, using the exposed instance
 to do it.
+
+Custom configuration
+--------------------
+
+You can easily change any parameter of `InteractorExecutor`, just change what do you want and run `build()`.
+
+```java
+
+@Provides @Singleton InteractorExecutor provideThreadExecutor(ThreadExecutor executor) {
+    executor.setMaxPoolSize(6)
+        .setKeepAliveTime(240)
+        .build();
+    return executor;
+  }
+
+```
 
 Contributors
 ------------

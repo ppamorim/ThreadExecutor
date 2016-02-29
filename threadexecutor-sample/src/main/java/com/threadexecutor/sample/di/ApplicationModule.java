@@ -43,7 +43,8 @@ import javax.inject.Singleton;
 
   @Provides @Singleton InteractorExecutor provideThreadExecutor(ThreadExecutor executor) {
     executor.setMaxPoolSize(6)
-        .setKeepAliveTime(240);
+        .setKeepAliveTime(240)
+        .build();
     return executor;
   }
 
