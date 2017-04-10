@@ -2,13 +2,13 @@
 
 [![Build Status](https://api.travis-ci.org/ppamorim/ThreadExecutor.svg?branch=master)](https://travis-ci.org/ppamorim/ThreadExecutor)
 
-Simple library that expose the `ThreadPool`, using Dagger 2.
+Simple library that expose the `ThreadPool`, using Dagger 2. Now written in Kotlin.
 
 Why?
 ----
 
 Are you sad to create every time the `ThreadPool` and `MainThread` to be exposed with
-Dagger to the application? If yes, you can use this library to reduce your work.
+Dagger to the application? If yes, you can use this library to reduce boilerplate.
 
 Right now you can change any parameter of `ThreadExecutor`, using the exposed instance
 to do it.
@@ -17,13 +17,13 @@ Custom configuration
 --------------------
 
 You can easily change any parameter of `InteractorExecutor`, just change what do you want and run `build()`.
+Unfortunately, Dagger's modules needs to be written in Java right now.
 
 ```java
 
 @Provides @Singleton InteractorExecutor provideThreadExecutor(ThreadExecutor executor) {
     executor.setMaxPoolSize(6)
-        .setKeepAliveTime(240)
-        .build();
+    executor.setKeepAliveTime(240)
     return executor;
   }
 
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.ppamorim:threadexecutor:0.1'
+  compile 'com.github.ppamorim:threadexecutor:0.2'
 }
 ```
 
@@ -55,7 +55,7 @@ Contributors
 License
 -------
 
-    Copyright 2016 Pedro Paulo de Amorim
+    Copyright 2017 Pedro Paulo de Amorim
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

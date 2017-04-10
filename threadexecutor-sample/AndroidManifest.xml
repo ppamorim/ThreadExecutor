@@ -7,13 +7,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="com.threadexecutor.sample.ThreadExecutorApplication">
+        android:name=".sample.ThreadExecutorApplication">
         <activity
-            android:name="com.threadexecutor.sample.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".sample.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

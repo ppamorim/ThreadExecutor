@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 Pedro Paulo de Amorim
+* Copyright (C) 2017 Pedro Paulo de Amorim
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,12 +13,17 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.github.ppamorim.threadexecutor;
+package com.threadexecutor.sample
 
-/**
- * Interactor that will be used to execute
- * a determined task on the async thread.
- */
-public interface Interactor {
-  void run();
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.threadexecutor.R
+
+class MainActivity: AppCompatActivity() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+  }
+
 }

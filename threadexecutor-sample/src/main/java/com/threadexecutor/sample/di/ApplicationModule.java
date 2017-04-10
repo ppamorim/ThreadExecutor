@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2016 Pedro Paulo de Amorim
+* Copyright (C) 2017 Pedro Paulo de Amorim
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -42,9 +42,6 @@ import javax.inject.Singleton;
   }
 
   @Provides @Singleton InteractorExecutor provideThreadExecutor(ThreadExecutor executor) {
-    executor.setMaxPoolSize(6)
-        .setKeepAliveTime(240)
-        .build();
     return executor;
   }
 
