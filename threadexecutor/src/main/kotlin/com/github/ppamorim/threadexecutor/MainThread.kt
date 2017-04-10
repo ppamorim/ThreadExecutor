@@ -15,8 +15,6 @@
 */
 package com.github.ppamorim.threadexecutor
 
-import android.os.Message
-
 /**
  * Interface that will use the instance of
  * main thread to inform the result of the
@@ -25,8 +23,7 @@ import android.os.Message
 interface MainThread {
   fun post(runnable: Runnable): Boolean
   fun post(runnable: () -> Unit): Boolean
-  fun sendMessage(message: Message): Boolean
+  fun sendMessage(what: Int, sent: () -> Unit)
+  fun sendMessage(what: Int, any: Any, sent: () -> Unit)
   fun sendEmptyMessage(what: Int): Boolean
-  fun obtainMessage(what: Int): Message
-  fun obtainMessage(what: Int, any: Any): Message
 }
