@@ -24,6 +24,7 @@ import android.os.Message
  */
 interface MainThread {
   fun post(runnable: Runnable): Boolean
+  fun post(runnable: () -> Unit): Boolean
   fun sendMessage(message: Message): Boolean
   fun sendEmptyMessage(what: Int): Boolean
 }
