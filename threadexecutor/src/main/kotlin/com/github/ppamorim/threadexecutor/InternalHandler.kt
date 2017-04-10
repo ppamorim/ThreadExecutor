@@ -8,13 +8,14 @@ val MESSAGE_POST_RESULT = 0x1
 
 class InternalHandler(looper: Looper): Handler(looper) {
 
-  lateinit var result: () -> Unit
+  private var result: (() -> Unit)? = null
 
   override fun handleMessage(msg: Message?) {
     super.handleMessage(msg)
     msg?.let { msg ->
       when (msg.what) {
-        MESSAGE_POST_RESULT -> result()
+        MESSAGE_POST_RESULT -> result?.invoke()
+        else -> {}
       }
     }
   }
