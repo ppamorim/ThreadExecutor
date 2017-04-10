@@ -29,6 +29,7 @@ class MainThreadImpl @Inject constructor(): MainThread {
   private val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
 
   override fun post(runnable: Runnable) = handler.post(runnable)
+  override fun post(runnable: () -> Unit) = handler.post { runnable() }
   override fun sendMessage(message: Message) = handler.sendMessage(message)
   override fun sendEmptyMessage(what: Int) = handler.sendEmptyMessage(what)
 
