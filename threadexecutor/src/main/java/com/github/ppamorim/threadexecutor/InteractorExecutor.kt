@@ -13,13 +13,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.github.ppamorim.threadexecutor;
+package com.github.ppamorim.threadexecutor
 
 /**
- * Interface that will use the instance of
- * main thread to inform the result of the
- * async task to the main thread.
+ * This interface will inform to the Thread
+ * Executor the interactor that needs to be
+ * executed.
  */
-public interface MainThread {
-  void post(final Runnable runnable);
+interface InteractorExecutor {
+  fun run(interactor: Interactor)
 }

@@ -13,13 +13,29 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.github.ppamorim.threadexecutor;
+package com.github.ppamorim.threadexecutor
+
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import javax.inject.Inject
 
 /**
- * This interface will inform to the Thread
- * Executor the interactor that needs to be
- * executed.
+ * This mehtod will expose te main thread using
+ * the handler and MainLooper of the application.
  */
-public interface InteractorExecutor {
-  void run(Interactor interactor);
+class MainThreadImpl @Inject internal constructor() : MainThread {
+
+  private val handler: Handler
+
+  init {
+    this.handler = Handler(Looper.getMainLooper())
+  }
+
+  override fun post(runnable: Runnable) {
+    handler.post(runnable)
+  }
+
+  override fun sendMessage(message: Message) {}
+
 }

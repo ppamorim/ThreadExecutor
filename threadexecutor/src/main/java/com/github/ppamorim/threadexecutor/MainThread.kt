@@ -13,26 +13,16 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.github.ppamorim.threadexecutor;
+package com.github.ppamorim.threadexecutor
 
-import android.os.Handler;
-import android.os.Looper;
-import javax.inject.Inject;
+import android.os.Message
 
 /**
- * This mehtod will expose te main thread using
- * the handler and MainLooper of the application.
+ * Interface that will use the instance of
+ * main thread to inform the result of the
+ * async task to the main thread.
  */
-public class MainThreadImpl implements MainThread {
-
-  private Handler handler;
-
-  @Inject MainThreadImpl() {
-    this.handler = new Handler(Looper.getMainLooper());
-  }
-
-  public void post(Runnable runnable) {
-    handler.post(runnable);
-  }
-
+interface MainThread {
+  fun post(runnable: Runnable)
+  fun sendMessage(message: Message)
 }
