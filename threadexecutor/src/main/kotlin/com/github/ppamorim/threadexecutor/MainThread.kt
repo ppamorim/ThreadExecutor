@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 Pedro Paulo de Amorim
+* Copyright (C) 2017 Pedro Paulo de Amorim
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,27 +15,15 @@
 */
 package com.github.ppamorim.threadexecutor
 
-import android.os.Handler
-import android.os.Looper
 import android.os.Message
-import javax.inject.Inject
 
 /**
- * This mehtod will expose te main thread using
- * the handler and MainLooper of the application.
+ * Interface that will use the instance of
+ * main thread to inform the result of the
+ * async task to the main thread.
  */
-class MainThreadImpl @Inject internal constructor() : MainThread {
-
-  private val handler: Handler
-
-  init {
-    this.handler = Handler(Looper.getMainLooper())
-  }
-
-  override fun post(runnable: Runnable) {
-    handler.post(runnable)
-  }
-
-  override fun sendMessage(message: Message) {}
-
+interface MainThread {
+  fun post(runnable: Runnable): Boolean
+  fun sendMessage(message: Message): Boolean
+  fun sendEmptyMessage(what: Int): Boolean
 }

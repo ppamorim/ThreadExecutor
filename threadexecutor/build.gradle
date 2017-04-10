@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'checkstyle'
 
 android {
@@ -18,7 +17,7 @@ android {
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
-      java.srcDirs = ['src/main/java']
+      java.srcDirs = ['src/main/kotlin']
     }
   }
 
@@ -28,9 +27,18 @@ android {
 
 }
 
+afterEvaluate {
+  android.sourceSets.all { sourceSet ->
+    if (!sourceSet.name.startsWith("test"))
+    {
+      sourceSet.kotlin.setSrcDirs([])
+    }
+  }
+}
+
 dependencies {
   provided 'com.google.dagger:dagger:2.9'
-  provided 'com.google.dagger:dagger-compiler:2.9'
+  kapt 'com.google.dagger:dagger-compiler:2.9'
   provided 'org.glassfish:javax.annotation:10.0-b28'
   compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
@@ -42,6 +50,7 @@ task checkstyle(type: Checkstyle) {
   exclude '**/gen/**'
   classpath = files()
 }
+
 repositories {
   mavenCentral()
 }
