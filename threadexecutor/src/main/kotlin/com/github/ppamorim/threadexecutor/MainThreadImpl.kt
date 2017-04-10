@@ -15,24 +15,25 @@
 */
 package com.github.ppamorim.threadexecutor
 
-import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import javax.inject.Inject
 
-/**
- * This mehtod will expose te main thread using
- * the handler and MainLooper of the application.
- */
 class MainThreadImpl @Inject constructor(): MainThread {
 
-  private val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
+  private val handler: InternalHandler by lazy {
+    InternalHandler(Looper.getMainLooper())
+  }
 
   override fun post(runnable: Runnable) = handler.post(runnable)
+
   override fun post(runnable: () -> Unit) = handler.post { runnable() }
-  override fun sendMessage(message: Message) = handler.sendMessage(message)
+
+  override fun sendMessage(what: Int, sent: () -> Unit) =
+      handler.obtainMessage(what, sent).sendToTarget()
+
+  override fun sendMessage(what: Int, any: Any, sent: () -> Unit) =
+      handler.obtainMessage(what, any, sent).sendToTarget()
+
   override fun sendEmptyMessage(what: Int) = handler.sendEmptyMessage(what)
-  override fun obtainMessage(what: Int): Message = handler.obtainMessage(what)
-  override fun obtainMessage(what: Int, any: Any): Message = handler.obtainMessage(what, any)
 
 }
