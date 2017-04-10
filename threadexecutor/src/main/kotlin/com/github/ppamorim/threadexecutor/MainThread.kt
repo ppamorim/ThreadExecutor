@@ -27,4 +27,6 @@ interface MainThread {
   fun post(runnable: () -> Unit): Boolean
   fun sendMessage(message: Message): Boolean
   fun sendEmptyMessage(what: Int): Boolean
+  fun obtainMessage(what: Int): Message
+  fun obtainMessage(what: Int, any: Any): Message
 }

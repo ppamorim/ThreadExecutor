@@ -32,5 +32,7 @@ class MainThreadImpl @Inject constructor(): MainThread {
   override fun post(runnable: () -> Unit) = handler.post { runnable() }
   override fun sendMessage(message: Message) = handler.sendMessage(message)
   override fun sendEmptyMessage(what: Int) = handler.sendEmptyMessage(what)
+  override fun obtainMessage(what: Int): Message = handler.obtainMessage(what)
+  override fun obtainMessage(what: Int, any: Any): Message = handler.obtainMessage(what, any)
 
 }
