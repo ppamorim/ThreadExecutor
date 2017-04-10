@@ -21,5 +21,5 @@ package com.github.ppamorim.threadexecutor
  * executed.
  */
 interface InteractorExecutor {
-  fun run(interactor: Interactor)
+  fun run(serial: Boolean = false, interactor: Interactor)
 }
