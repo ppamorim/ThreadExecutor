@@ -15,6 +15,7 @@
 */
 package com.github.ppamorim.threadexecutor
 
+import android.os.Binder
 import android.os.Looper
 import javax.inject.Inject
 
@@ -28,11 +29,15 @@ class MainThreadImpl @Inject constructor(): MainThread {
 
   override fun post(runnable: () -> Unit) = handler.post { runnable() }
 
-  override fun sendMessage(what: Int, sent: () -> Unit) =
-      handler.obtainMessage(what, sent).sendToTarget()
+  override fun sendMessage(what: Int, result: () -> Unit) {
+    Binder.flushPendingCommands()
+    return handler.obtainMessage(what, result = result).sendToTarget()
+  }
 
-  override fun sendMessage(what: Int, any: Any, sent: () -> Unit) =
-      handler.obtainMessage(what, any, sent).sendToTarget()
+  override fun sendMessage(what: Int, any: Any, result: () -> Unit) {
+    Binder.flushPendingCommands()
+    handler.obtainMessage(what, any, result = result).sendToTarget()
+  }
 
   override fun sendEmptyMessage(what: Int) = handler.sendEmptyMessage(what)
 

@@ -23,7 +23,7 @@ package com.github.ppamorim.threadexecutor
 interface MainThread {
   fun post(runnable: Runnable): Boolean
   fun post(runnable: () -> Unit): Boolean
-  fun sendMessage(what: Int, sent: () -> Unit)
-  fun sendMessage(what: Int, any: Any, sent: () -> Unit)
+  fun sendMessage(what: Int, result: () -> Unit)
+  fun sendMessage(what: Int, any: Any, result: () -> Unit)
   fun sendEmptyMessage(what: Int): Boolean
 }

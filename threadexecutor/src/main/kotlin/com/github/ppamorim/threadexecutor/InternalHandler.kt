@@ -11,21 +11,25 @@ class InternalHandler(looper: Looper): Handler(looper) {
   private var result: (() -> Unit)? = null
 
   override fun handleMessage(msg: Message?) {
-    super.handleMessage(msg)
     msg?.let { msg ->
       when (msg.what) {
-        MESSAGE_POST_RESULT -> result?.invoke()
+        MESSAGE_POST_RESULT -> {
+          result?.invoke()
+          result = null
+        }
         else -> {}
       }
     }
   }
 
-  fun obtainMessage(what: Int, any: Any? = null, result: () -> Unit): Message {
+  fun obtainMessage(what: Int, result: () -> Unit): Message {
     this.result = result
-    any?.let { any ->
-      return obtainMessage(what, any)
-    }
     return obtainMessage(what)
+  }
+
+  fun obtainMessage(what: Int, any: Any, result: () -> Unit): Message {
+    this.result = result
+    return obtainMessage(what, any)
   }
 
 }

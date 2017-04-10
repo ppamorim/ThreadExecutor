@@ -15,15 +15,12 @@
 */
 package com.github.ppamorim.threadexecutor
 
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.RejectedExecutionHandler
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
+import java.util.*
+import java.util.concurrent.*
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
-const val DEFAULT_CORE_POOL_SIZE = 3
-const val DEFAULT_MAX_POOL_SIZE = 3
-const val DEFAULT_KEEP_ALIVE_TIME = 120L
+const val DEFAULT_KEEP_ALIVE_TIME = 30L
 
 /**
  * This class will create the instance of
@@ -37,29 +34,81 @@ const val DEFAULT_KEEP_ALIVE_TIME = 120L
  */
 class ThreadExecutor @Inject constructor(): InteractorExecutor {
 
-  var corePoolSize: Int = DEFAULT_CORE_POOL_SIZE
-  var maxPoolSize: Int = DEFAULT_MAX_POOL_SIZE
+  val CPU_COUNT = Runtime.getRuntime().availableProcessors()
+
+  var corePoolSize: Int = Math.max(2, Math.min(CPU_COUNT - 1, 4))
+  var maxPoolSize: Int = CPU_COUNT * 2 + 1
   var keepAliveTime: Long = DEFAULT_KEEP_ALIVE_TIME
   var timeUnit: TimeUnit = TimeUnit.SECONDS
 
-  private val workQueue by lazy { LinkedBlockingQueue<Runnable>() }
+  private val workQueue by lazy { LinkedBlockingQueue<Runnable>(128) }
 
   private val threadPoolExecutor by lazy {
-    ThreadPoolExecutor(
+    val threadPoolExecutor = ThreadPoolExecutor(
         corePoolSize,
         maxPoolSize,
         keepAliveTime,
         timeUnit,
-        workQueue)
+        workQueue,
+        threadFactory,
+        rejectedExecutionHandler)
+    threadPoolExecutor.allowCoreThreadTimeOut(true)
+    threadPoolExecutor
   }
 
-  override fun run(interactor: Interactor) {
-    threadPoolExecutor.rejectedExecutionHandler = rejectedExecutionHandler
-    threadPoolExecutor.submit { interactor.run() }
+  private val serialExecutor by lazy {
+    SerialExecutor(threadPoolExecutor)
   }
 
-  private val rejectedExecutionHandler = RejectedExecutionHandler { _, _ ->
-    threadPoolExecutor.shutdown()
+  private val threadFactory = object: ThreadFactory {
+    private val count = AtomicInteger(1)
+    override fun newThread(r: Runnable): Thread {
+      return Thread(r, "AsyncTask #${count.getAndIncrement()}")
+    }
+  }
+
+  private val rejectedExecutionHandler: RejectedExecutionHandler =
+      RejectedExecutionHandler { _, _ ->
+        threadPoolExecutor.shutdown()
+      }
+
+  override fun run(serial: Boolean, interactor: Interactor) {
+    if (serial) {
+      serialExecutor.execute { interactor.run() }
+    } else {
+      threadPoolExecutor.submit { interactor.run() }
+    }
+  }
+
+}
+
+class SerialExecutor(val threadPoolExecutor: ThreadPoolExecutor): Executor {
+
+  private val tasks = ArrayDeque<Runnable>()
+  private var active: Runnable? = null
+
+  override fun execute(runnable: Runnable?) {
+    synchronized(this) {
+      tasks.offer(Runnable {
+        try {
+          runnable?.run()
+        } finally {
+          scheduleNext()
+        }
+      })
+      if (active == null) {
+        scheduleNext()
+      }
+    }
+  }
+
+  fun scheduleNext() {
+    synchronized(this) {
+      active = tasks.poll()
+      active?.let {
+        threadPoolExecutor.submit(it)
+      }
+    }
   }
 
 }
