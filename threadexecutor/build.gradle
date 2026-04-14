@@ -1,17 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'checkstyle'
+apply plugin: 'maven-publish'
 
 android {
-
-  compileSdkVersion Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
-  buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+  namespace 'com.github.ppamorim.threadexecutor'
+  compileSdk 34
 
   defaultConfig {
-    versionCode Integer.parseInt(project.VERSION_CODE)
-    versionName project.VERSION_NAME
-    minSdkVersion Integer.parseInt(project.ANDROID_MIN_SDK)
-    targetSdkVersion Integer.parseInt(project.ANDROID_TARGET_SDK_VERSION)
+    minSdk 21
   }
 
   sourceSets {
@@ -21,36 +17,34 @@ android {
     }
   }
 
-  lintOptions {
+  lint {
     abortOnError false
   }
 
-}
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
 
-afterEvaluate {
-  android.sourceSets.all { sourceSet ->
-    if (!sourceSet.name.startsWith("test"))
-    {
-      sourceSet.kotlin.setSrcDirs([])
-    }
+  kotlinOptions {
+    jvmTarget = '17'
   }
 }
 
 dependencies {
-  provided 'com.google.dagger:dagger:2.9'
-  kapt 'com.google.dagger:dagger-compiler:2.9'
-  provided 'org.glassfish:javax.annotation:10.0-b28'
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation 'javax.inject:javax.inject:1'
 }
 
-task checkstyle(type: Checkstyle) {
-  configFile file('../config/checkstyle/checkstyle.xml')
-  source 'src/main/java'
-  include '**/*.java'
-  exclude '**/gen/**'
-  classpath = files()
-}
-
-repositories {
-  mavenCentral()
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+        groupId = 'com.github.ppamorim'
+        artifactId = 'threadexecutor'
+        version = '0.2.4'
+      }
+    }
+  }
 }
